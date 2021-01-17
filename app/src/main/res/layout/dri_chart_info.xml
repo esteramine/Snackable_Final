@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="25dp">
+    <TextView
+        android:id="@+id/nutritionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CALORIE"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/nutritionAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="264kcal"
+        android:gravity="center_horizontal"/>
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/nutritionChart"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

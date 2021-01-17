@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/miCompare"
+        android:icon="@drawable/ic_compare"
+        android:title="Compare"/>
+
+    <item
+        android:id="@+id/placeHolder"
+        android:title=""/>
+
+    <item
+        android:id="@+id/miYourList"
+        android:icon="@drawable/ic_your_lists"
+        android:title="Your Lists"/>
+
+</menu>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DisplayChoicesActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/displayChoicesToolbar"
+            android:minHeight="?attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="@android:color/white"
+            android:background="?attr/colorPrimary"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:padding = "20dp">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Show"
+                    android:textColor="#99000000"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:id="@+id/checkAdditives"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:padding="20dp"
+                    android:text="Additives"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:onClick="onDisplayClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkNutrients"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:padding="20dp"
+                    android:text="Nutrients"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:onClick="onDisplayClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkCalories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:padding="20dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Calories"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:onClick="onDisplayClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkCarbohydrates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:padding="20dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Carbohydrates"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:onClick="onDisplayClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkDietaryFiber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:padding="20dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Dietary Fiber"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:onClick="onDisplayClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:padding="20dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Fat"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:onClick="onDisplayClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkProtein"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:padding="20dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Protein"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:onClick="onDisplayClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkSodium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:padding="20dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Sodium"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:onClick="onDisplayClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkSugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:padding="20dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Sugar"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:onClick="onDisplayClicked"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/displayChoiceDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="DONE" />
+</RelativeLayout>

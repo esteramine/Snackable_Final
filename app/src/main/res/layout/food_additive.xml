@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp">
+    <ImageView
+        android:id="@+id/FASymbol"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/warning"
+        android:layout_marginRight="9dp"
+        android:layout_gravity="center_vertical"/>
+    <TextView
+        android:id="@+id/FAName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Food Additive"
+        android:textColor="@color/linkColor"
+        android:textSize="16dp"
+        android:layout_gravity="center_vertical"/>
+</LinearLayout>

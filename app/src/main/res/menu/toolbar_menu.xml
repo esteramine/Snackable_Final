@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/miDisplay"
+        android:icon="@drawable/ic_display"
+        app:showAsAction="ifRoom"
+        android:title="Display">
+    </item>
+    <item
+        android:id="@+id/miSort"
+        android:icon="@drawable/ic_sort"
+        app:showAsAction="ifRoom"
+        android:title="Sort">
+    </item>
+    <!--<item
+        android:id="@+id/miMore"
+        android:icon="@drawable/ic_more"
+        app:showAsAction="ifRoom"
+        android:title="More">
+    </item>-->
+
+    <item
+        android:id="@+id/miSelectItems"
+        app:showAsAction="never"
+        android:title="Select Items"
+        android:iconTint="@color/black">
+    </item>
+    <item
+        android:id="@+id/miClearAll"
+        app:showAsAction="never"
+        android:title="Clear All">
+    </item>
+    <item
+        android:id="@+id/miSaveAll"
+        app:showAsAction="never"
+        android:title="Save All">
+    </item>
+</menu>

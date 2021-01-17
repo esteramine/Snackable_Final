@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FoodAdditiveDetail"
+    android:background="@color/white">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/itemDetailToolbarAdditives"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleTextColor="@android:color/white"
+        android:background="@color/white"
+        app:menu="@menu/item_detail_menu">
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="25dp"
+        android:paddingHorizontal="30dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/additiveIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/safe"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/additiveTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="30dp"
+        android:fillViewport="false">
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutCheckbox"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/additive_uses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Uses"
+                android:textColor="#99000000"
+                android:paddingVertical="10dp"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/additive_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:paddingVertical="10dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+
+            <View
+                android:id="@+id/additive_separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/darker_gray"/>
+
+
+            <TextView
+                android:id="@+id/additive_foundin_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FOUND IN"
+                android:paddingVertical="10dp"
+                android:textStyle="bold"
+                android:textColor="#99000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/additive_foundin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Found in"
+                android:paddingVertical="10dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

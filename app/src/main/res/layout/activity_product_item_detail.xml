@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FoodAdditiveDetail"
+    android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/itemDetailToolbar"
+            android:minHeight="?attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="@android:color/white"
+            android:background="@color/white"
+            app:menu="@menu/item_detail_menu">
+        </androidx.appcompat.widget.Toolbar>
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/itemDetailScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="90dp"
+                android:paddingHorizontal="33dp">
+
+                <!--<ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="#00000000"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/x"
+                    android:id="@+id/collapseButton"
+                    />-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="20dp" >
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_marginRight="30dp">
+                        <ImageView
+                            android:id="@+id/productImg"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:src="@drawable/not_found" />
+                    </androidx.cardview.widget.CardView>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+                        <TextView
+                            android:id="@+id/productName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Kinder Maxi"
+                            android:textSize="@dimen/font_size_m"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/productWeight"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="21g"
+                            android:lineHeight="16dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--<GridView
+                    android:id="@+id/chartGridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numColumns="3"
+                    android:gravity="center" />-->
+                <com.example.snackable.ExpandableHeightGridView
+                    android:id="@+id/chartGridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numColumns="3"
+                    android:gravity="center" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="% of Daily Reference Intake"
+                    android:gravity="end"
+                    android:layout_marginTop="10dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ADDITIVES"
+                            android:textSize="20dp"
+                            android:textStyle="bold"/>
+
+                        <ImageView
+                            android:id="@+id/info_button"
+                            android:paddingHorizontal="10dp"
+                            android:layout_width="35dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:src="@drawable/information"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/productAdditiveNoneText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="None"
+                        android:textSize="18dp"/>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/foodAdditivesRecyclerView" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/addToCompareButton"
+        android:layout_width="290dp"
+        android:layout_height="50dp"
+        android:text="ADD TO COMPARE"
+        android:textColor="@color/black"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
+
+

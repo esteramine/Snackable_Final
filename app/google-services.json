@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "45433407806",
+    "project_id": "test-a09f2",
+    "storage_bucket": "test-a09f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45433407806:android:cbc393e2e0244cf956046f",
+        "android_client_info": {
+          "package_name": "com.example.snackable"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "45433407806-d6c6ut9ifp5si5eb0fljp77mfb1shium.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7-uCMy19T82MDUJwsQy_ui6bVBkr5UY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "45433407806-d6c6ut9ifp5si5eb0fljp77mfb1shium.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

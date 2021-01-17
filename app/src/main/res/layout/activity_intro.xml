@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/themeColor"
+    tools:context=".IntroActivity">
+    <ImageView
+        android:id="@+id/snackableLogo"
+        android:layout_width="103dp"
+        android:layout_height="103dp"
+        android:src="@drawable/snackable_logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="250dp"/>
+
+    <TextView
+        android:id="@+id/snackableName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="Snackable"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_l"
+        android:fontFamily="@font/noto_sans"
+        android:textStyle="bold" />
+
+</LinearLayout>

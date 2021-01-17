@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Snackable" parent="Theme.MaterialComponents.DayNight.NoActionBar"><!--MaterialComponents.DayNight.DarkActionBar-->
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/themeColor</item>
+        <item name="colorPrimaryVariant">@color/statusBar</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/themeColor</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+    </style>
+
+    <style name="Theme.Snackable.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Snackable.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>
+
+    <style name="Theme.Snackable.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
