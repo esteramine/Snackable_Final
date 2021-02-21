@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.snackable.utils.LocalStorageManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,16 +39,11 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import static android.content.Context.MODE_PRIVATE;
 
 public class HistoryFragment extends Fragment {
-    private final static String SHARED_PREFS = "SHARED_PREFS";
-    private final static String HISTORY = "HISTORY";
-    private final static String SAVED= "SAVED";
-    private final static String ITEMLIST = "ITEMLIST";
     ArrayList<ProductItemModel> historyList = new ArrayList<>();
+    LocalStorageManager localStorageManager = new LocalStorageManager();
     RecyclerView recyclerView;
     YourListAdapter adapter;
     Context context;
-    LinearLayout linearLayout;
-    
     
     public HistoryFragment() {
         // Required empty public constructor
@@ -56,19 +52,20 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // get shared preferences of history
-        loadHistory();
         // Initialize view
         context = this.getContext();
+        // load History
+        historyList = localStorageManager.getHistory(context);
+
         View view = inflater.inflate(R.layout.fragment_history, container, false);
         recyclerView = view.findViewById(R.id.historyRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new YourListAdapter(this.getContext(), historyList, true);
+        adapter = new YourListAdapter(context, historyList, true);
         recyclerView.setAdapter(adapter);
 
+        //Swipe left buttons
         SwipeHelper swipeHelper = new SwipeHelper(context, recyclerView) {
-
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
@@ -87,7 +84,7 @@ public class HistoryFragment extends Fragment {
                                                 toast.show();
                                                 historyList.remove(pos);
                                                 adapter.notifyItemRemoved(pos);
-                                                updateHistoryData();
+                                                localStorageManager.updateHistory(context, historyList);
                                             }
                                         })
                                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -111,7 +108,7 @@ public class HistoryFragment extends Fragment {
                                 Toast toast = Toast.makeText(getContext(), "Added to Compare", Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-                                saveToCompare(historyList.get(pos));
+                                localStorageManager.addToCompare(context, historyList.get(pos));
                                 adapter.notifyDataSetChanged();
                             }
                         }
@@ -124,11 +121,11 @@ public class HistoryFragment extends Fragment {
                             @Override
                             public void onClick(int pos) {
                                 //Toast toast = Toast.makeText(getActivity().getBaseContext(), historyList.get(pos).getProductName()+ " Saved!", Toast.LENGTH_LONG);
-                                Toast toast = Toast.makeText(getActivity().getBaseContext(), "SAVED", Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(context, "SAVED", Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
                                 historyList.get(pos).setBookmarked(true);
-                                saveToSavedList(historyList.get(pos));
+                                localStorageManager.saveDataToSaved(context,historyList.get(pos));
 
                                 OnSavedButtonClickListener listener = (OnSavedButtonClickListener) getActivity();
                                 listener.onSavedButtonClicked();
@@ -174,78 +171,6 @@ public class HistoryFragment extends Fragment {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
-
-    void loadHistory(){
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(HISTORY, "");
-        if (json!=""){
-            historyList = gson.fromJson(json, type);
-        }
-    }
-
-    void saveToSavedList(ProductItemModel m){
-        //load data
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(SAVED, "");
-        ArrayList<ProductItemModel> savedList = new ArrayList<>();
-        if (json!=""){
-            savedList = gson.fromJson(json, type);
-        }
-        //check whether there is same product in the saved list
-        for (int i = 0; i < savedList.size(); i++){
-            if (savedList.get(i).getProductBarcode().equals(m.getProductBarcode())){
-                return;
-            }
-        }
-        savedList.add(0, m);
-
-        //save to saved list
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (savedList.size()!=0) {
-            Gson gsonSaved = new Gson();
-            String jsonSaved = gsonSaved.toJson(savedList);
-            editor.putString(SAVED, jsonSaved);
-            editor.commit();
-        }
-    }
-
-    void updateHistoryData(){
-        SharedPreferences.Editor editor = this.getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).edit();
-        Gson gsonSaved = new Gson();
-        String jsonSaved = gsonSaved.toJson(historyList);
-        editor.putString(HISTORY, jsonSaved);
-        editor.commit();
-    }
-
-    private void saveToCompare(ProductItemModel m){
-        ArrayList<ProductItemModel> compareList = new ArrayList<>();
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(ITEMLIST, "");
-        if (json!="") {
-            compareList = gson.fromJson(json, type);
-        }
-        //check whether there is same product in the compare list
-        for (int i = 0; i < compareList.size(); i++){
-            if (compareList.get(i).getProductBarcode().equals(m.getProductBarcode())){
-                return;
-            }
-        }
-
-        compareList.add(m);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gsonSaved = new Gson();
-        String jsonSaved = gsonSaved.toJson(compareList);
-        editor.putString(ITEMLIST, jsonSaved);
-        editor.commit();
-    }
 
     public interface OnSavedButtonClickListener{
         void onSavedButtonClicked();

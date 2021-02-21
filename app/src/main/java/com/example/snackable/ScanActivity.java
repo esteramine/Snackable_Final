@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.example.snackable.utils.LocalStorageManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.zxing.Result;
@@ -32,14 +34,13 @@ import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ScanActivity extends AppCompatActivity {
-    private final static String SHARED_PREFS = "SHARED_PREFS";
-    private final static String HISTORY = "HISTORY";
-
+    private static Context context;
     private CodeScanner mCodeScanner;
     private ImageView cancelBtn;
+
+    LocalStorageManager localStorageManager = new LocalStorageManager();
     String barcodeNum;
     Thread th;
 
@@ -48,6 +49,7 @@ public class ScanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
         setContentView(R.layout.activity_scan);
         cancelBtn = findViewById(R.id.cancelBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -164,31 +166,12 @@ public class ScanActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        /*AlertDialog.Builder builder = new AlertDialog.Builder(ScanActivity.this);
-                        builder.setMessage("Product Scanned:\n"+ m.getProductName() + "\n(" + barcodeNum + ")")
-                                .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        Intent intent = new Intent (ScanActivity.this, CompareActivity.class);
-                                        if (m.getProductName()!=""){
-                                            m.setProductSavedTime(System.currentTimeMillis()); //add time stamp
-                                            intent.putExtra("NewModel", m);
-                                            saveDataToHistory(m);
-                                        }
-                                        ScanActivity.this.startActivity(intent);
-                                    }
-                                })
-                                .setNegativeButton(Html.fromHtml("<font color='#FF0000'>Scan Again</font>"), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        // User cancelled the dialog
-                                    }
-                                });
-                        builder.create();
-                        builder.show();*/
                         Intent intent = new Intent (ScanActivity.this, ProductItemDetail.class);
                         if (m.getProductName()!=""){
                             m.setProductSavedTime(System.currentTimeMillis()); //add time stamp
                             intent.putExtra("ModelScanned", m);
-                            saveDataToHistory(m);
+                            localStorageManager.saveDataToHistory(context, m);
+                            //saveDataToHistory(m);
                         }
                         ScanActivity.this.startActivity(intent);
                     }
@@ -228,26 +211,5 @@ public class ScanActivity extends AppCompatActivity {
     protected void onPause() {
         mCodeScanner.releaseResources();
         super.onPause();
-    }
-
-    public void saveDataToHistory(ProductItemModel model){
-        ArrayList<ProductItemModel> historyList = new ArrayList<>();
-        // load history from shared prefs
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(HISTORY, "");
-        if (json!=""){
-            historyList = gson.fromJson(json, type);
-        }
-
-        //save new product item model to history list
-        SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).edit();
-        historyList.add(0, model);
-        Gson gsonSave = new Gson();
-        String jsonSave = gsonSave.toJson(historyList);
-        editor.putString(HISTORY, jsonSave);
-        editor.commit();
-
     }
 }

@@ -2,15 +2,11 @@ package com.example.snackable;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,20 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.snackable.utils.LocalStorageManager;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class SavedFragment extends Fragment {
-    private final static String SHARED_PREFS = "SHARED_PREFS";
-    private final static String SAVED = "SAVED";
-    private final static String ITEMLIST = "ITEMLIST";
     ArrayList<ProductItemModel> savedList = new ArrayList<>();
+    LocalStorageManager localStorageManager = new LocalStorageManager();
     RecyclerView recyclerView;
     YourListAdapter adapter;
     Context context;
@@ -47,18 +38,19 @@ public class SavedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        loadSavedList();
-        this.context = this.getContext();
+        context = this.getContext();
+        //load Saved
+        savedList = localStorageManager.getSaved(context);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_saved, container, false);
         recyclerView = view.findViewById(R.id.savedRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new YourListAdapter(this.getContext(), savedList, false);
+        adapter = new YourListAdapter(context, savedList, false);
         recyclerView.setAdapter(adapter);
 
+        //Swipe left buttons
         SwipeHelper swipeHelper = new SwipeHelper(context, recyclerView) {
-
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
@@ -75,7 +67,7 @@ public class SavedFragment extends Fragment {
                                                 Toast.makeText(context, savedList.get(pos).getProductName()+ " Removed!", Toast.LENGTH_LONG).show();
                                                 savedList.remove(pos);
                                                 adapter.notifyItemRemoved(pos);
-                                                updateSavedList();
+                                                localStorageManager.updateSaved(context, savedList);
                                             }
                                         })
                                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -99,7 +91,7 @@ public class SavedFragment extends Fragment {
                                 Toast toast = Toast.makeText(getContext(), "Added to Compare", Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-                                saveToCompare(savedList.get(pos));
+                                localStorageManager.addToCompare(context, savedList.get(pos));
                                 adapter.notifyDataSetChanged();
                             }
                         }
@@ -110,51 +102,4 @@ public class SavedFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
         return view;
     }
-
-    private void loadSavedList() {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(SAVED, "");
-        if (json!=""){
-            savedList = gson.fromJson(json, type);
-        }
-    }
-
-    private void updateSavedList(){
-        SharedPreferences.Editor editor = this.getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).edit();
-
-        Gson gsonSaved = new Gson();
-        String jsonSaved = gsonSaved.toJson(savedList);
-        editor.putString(SAVED, jsonSaved);
-        editor.commit();
-    }
-
-    private void saveToCompare(ProductItemModel m){
-        ArrayList<ProductItemModel> compareList = new ArrayList<>();
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(ITEMLIST, "");
-        if (json!="") {
-            compareList = gson.fromJson(json, type);
-        }
-
-        //check whether there is same product in the compare list
-        for (int i = 0; i < compareList.size(); i++){
-            if (compareList.get(i).getProductBarcode().equals(m.getProductBarcode())){
-                return;
-            }
-        }
-        compareList.add(m);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gsonSaved = new Gson();
-        String jsonSaved = gsonSaved.toJson(compareList);
-        editor.putString(ITEMLIST, jsonSaved);
-        editor.commit();
-    }
-
-
 }

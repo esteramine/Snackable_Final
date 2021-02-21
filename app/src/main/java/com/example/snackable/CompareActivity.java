@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.snackable.utils.LocalStorageManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -39,13 +41,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class CompareActivity extends AppCompatActivity{
-    private final static String SHARED_PREFS = "SHARED_PREFS";
-    private final static String ITEMLIST = "ITEMLIST";
-    private final static String SORT_OPT = "SORT_OPT";
-    private final static String SORT_ORDER = "SORT_ORDER";
-    private final static String DISPLAY_OPTS = "DISPLAY_OPTS";
-    private final static String SAVED = "SAVED";
     private boolean[] displayOpts = new boolean[9];
+    LocalStorageManager localStorageManager = new LocalStorageManager();
+    Context context;
     Toolbar toolbar;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
@@ -66,7 +64,9 @@ public class CompareActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
-
+        context = getApplicationContext();
+        displayOpts = new boolean[9];
+        displayOpts = new boolean[] {true, true, false, false, false, false, false, false, true};
         loadData(); //load itemList, sort option
 
         Intent intent = getIntent();
@@ -81,7 +81,7 @@ public class CompareActivity extends AppCompatActivity{
             }
             if (!foundSame){
                 itemList.add(newModel);
-                saveData();
+                localStorageManager.updateCompare(context, itemList);
                 loadData();
             }
             blinkedBarcodeNum = newModel.getProductBarcode();
@@ -152,7 +152,7 @@ public class CompareActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-        saveData();
+        localStorageManager.updateCompare(context, itemList);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -237,7 +237,7 @@ public class CompareActivity extends AppCompatActivity{
                                 toast.show();
                                 itemList.get(pos).setBookmarked(true);
                                 adapter.notifyDataSetChanged();
-                                saveToSavedList(itemList.get(pos));
+                                localStorageManager.saveDataToSaved(context, itemList.get(pos));
                             }
                         }
                 ));
@@ -246,37 +246,6 @@ public class CompareActivity extends AppCompatActivity{
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeHelper);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
-    /*ArrayList<ProductItemModel> getItemList(){
-        ProductItemModel m;
-
-        m = new ProductItemModel();
-        m.setProductName("Kinder Bueno");
-        m.setProductImg("https://www.kinder.com/hk/sites/kinder_hk/files/styles/explore_products/public/2019-09/kinder-bueno-pack-hk.png?t=1603787374");
-        m.addNutritionContentToList("Energy (kcal)", "240kcal");
-        m.addNutritionContentToList("Sugar", "30 g");
-        m.addNutritionContentToList("Fat", "16 g");
-        m.addNutritionContentToList("Fibers", "1 g");
-        m.addFoodAdditiveToList("Trans Fat");
-        m.addFoodAdditiveToList("Lecithin");
-        itemList.add(m);
-
-        m = new ProductItemModel();
-        m.setProductName("Snickers");
-        m.setProductImg("https://s.yimg.com/zp/MerchandiseImages/E4BD103D2D-SP-6219137.jpg");
-        m.addNutritionContentToList("Energy (kcal)", "240kcal");
-        m.addNutritionContentToList("Sugar", "64 g");
-        m.addNutritionContentToList("Fat", "23 g");
-        m.addFoodAdditiveToList("Trans Fat");
-        m.addFoodAdditiveToList("Lecithin");
-        m.addFoodAdditiveToList("Vanillin");
-        itemList.add(m);
-
-        for (int i = 0; i < itemList.size(); i++) {
-            itemList.get(i).setProductRanking(i+1);
-        }
-
-        return itemList;
-    }*/
 
     ArrayList<ProductItemModel> sort(ArrayList<ProductItemModel> items, String sortOpt, boolean ascending){
         Collections.sort(items, new Comparator<ProductItemModel>() {
@@ -322,66 +291,13 @@ public class CompareActivity extends AppCompatActivity{
         return items;
     }
 
-    public void saveData(){
-        SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).edit();
-        /*editor.putInt(ITEMLIST_SIZE, itemList.size());
-        for (int i = 0; i < itemList.size(); i++){
-            Gson gson = new Gson();
-            String json = gson.toJson(itemList.get(i));
-            editor.putString("item_"+i, json);
-        }*/
-        //if (itemList.size()!=0) {
-        Gson gson = new Gson();
-        String json = gson.toJson(itemList);
-        editor.putString(ITEMLIST, json);
-        editor.commit();
-        //}
-    }
-
-    void saveToSavedList(ProductItemModel model){
-        //load to saved list
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(SAVED, "");
-        ArrayList<ProductItemModel> savedList = new ArrayList<>();
-        if (json!=""){
-            savedList = gson.fromJson(json, type);
-        }
-        //check whether there is same product in the compare list
-        for (int i = 0; i < savedList.size(); i++){
-            if (savedList.get(i).getProductBarcode().equals(model.getProductBarcode())){
-                return;
-            }
-        }
-        savedList.add(0, model);
-
-        //add to saved list
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gsonSaved = new Gson();
-        String jsonSaved = gsonSaved.toJson(savedList);
-        editor.putString(SAVED, jsonSaved);
-        editor.commit();
-    }
 
     void loadData(){
-        //load itemList
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        /*int itemListSize = sharedPreferences.getInt(ITEMLIST_SIZE, 0);
-        for (int i = 0; i < itemListSize; i++){
-            Gson gson = new Gson();
-            String json = sharedPreferences.getString("item_"+i, "");
-            Student mStudentObject = gson.fromJson(json, Student.class);
-        }*/
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(ITEMLIST, "");
-        if (json!=""){
-            itemList = gson.fromJson(json, type);
-        }
+        //load Compare list
+        itemList = localStorageManager.getCompare(context);
 
         //load sortOption
-        sortChoice = sharedPreferences.getString(SORT_OPT, "Sugars");
+        sortChoice = localStorageManager.getSortChoice(context);
         if (sortChoice=="Calories"){
             sortChoice = "Energy(kcal)";
         }
@@ -389,27 +305,11 @@ public class CompareActivity extends AppCompatActivity{
             sortChoice = "Fibers";
         }
 
-        sortOrder = sharedPreferences.getBoolean(SORT_ORDER, true);
+        //load sort order
+        sortOrder = localStorageManager.getSortOrder(context);
 
         //load display options
-        /*for (int i = 0; i < displayOpts.length; i++){
-            if (i == 0 || i == 1 || i == 8){
-                displayOpts[i] = sharedPreferences.getBoolean(DISPLAY_OPTS + i, true);
-            }
-            else{
-                displayOpts[i] = sharedPreferences.getBoolean(DISPLAY_OPTS + i, false);
-            }
-            System.out.println("hihihihihi"+displayOpts[i]);
-        }*/
-        Gson gsonDisplay = new Gson();
-        Type typeDisplay = new TypeToken<boolean[]>(){}.getType();
-        String jsonDisplay = sharedPreferences.getString(DISPLAY_OPTS, "");
-        if (json!=""){
-            displayOpts = gsonDisplay.fromJson(jsonDisplay, typeDisplay);
-        }
-        else{
-            displayOpts = new boolean[] {true, true, false, false, false, false, false, false, true};
-        }
+        displayOpts = localStorageManager.getDisplayOptions(context);
     }
 
 
@@ -418,19 +318,20 @@ public class CompareActivity extends AppCompatActivity{
             itemList.get(i).setProductRanking(i+1);
         }
         itemListSize.setText(itemList.size()+" items");
-        saveData();
+        localStorageManager.updateCompare(context, itemList);
         adapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         loadData();
         String mostOrLeast = sortOrder? "Least":"Most";
         sortIndicator.setText("Sorted by "+ mostOrLeast + " " +sortChoice);
 
         itemList = sort(itemList, sortChoice, sortOrder);
-        addSortOptToDisplay();
+        //addSortOptToDisplay();
         adapter = new ProductItemAdapter(this, itemList, displayOpts, blinkedBarcodeNum);
         recyclerView.setAdapter(adapter);
         blinkedBarcodeNum = "";

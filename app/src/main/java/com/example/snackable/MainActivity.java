@@ -35,11 +35,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-//python libs
-import com.chaquo.python.Kwarg;
-import com.chaquo.python.PyObject;
-import com.chaquo.python.android.AndroidPlatform;
-import com.chaquo.python.Python;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
