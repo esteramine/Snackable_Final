@@ -1,4 +1,4 @@
-package com.example.snackable;
+package com.example.snackable.ListsActivity;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -6,6 +6,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.snackable.ItemClickListener;
+import com.example.snackable.R;
 
 public class YourListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     ImageView yourListItemImg;

@@ -3,11 +3,14 @@ package com.example.snackable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,6 +39,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class ScanActivity extends AppCompatActivity {
+    private static final int MY_CAMERA_REQUEST_CODE = 100;
     private static Context context;
     private CodeScanner mCodeScanner;
     private ImageView cancelBtn;
@@ -49,8 +53,10 @@ public class ScanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getApplicationContext();
         setContentView(R.layout.activity_scan);
+        context = getApplicationContext();
+        //checkCameraPermission();
+
         cancelBtn = findViewById(R.id.cancelBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +90,24 @@ public class ScanActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void checkCameraPermission(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+        }
+    }
+
+    /*@Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "You cannot scan because you deny the camera permission.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }*/
 
 
     private Runnable r0=new Runnable(){

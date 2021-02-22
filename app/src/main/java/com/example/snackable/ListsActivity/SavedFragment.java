@@ -1,4 +1,4 @@
-package com.example.snackable;
+package com.example.snackable.ListsActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.snackable.ListsActivity.YourListAdapter;
+import com.example.snackable.ProductItemModel;
+import com.example.snackable.R;
+import com.example.snackable.SwipeHelper;
 import com.example.snackable.utils.LocalStorageManager;
 
 import java.util.ArrayList;

@@ -1,9 +1,7 @@
-package com.example.snackable;
+package com.example.snackable.ListsActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,22 +19,18 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.snackable.ListsActivity.YourListAdapter;
+import com.example.snackable.ProductItemModel;
+import com.example.snackable.R;
+import com.example.snackable.SwipeHelper;
 import com.example.snackable.utils.LocalStorageManager;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class HistoryFragment extends Fragment {
     ArrayList<ProductItemModel> historyList = new ArrayList<>();

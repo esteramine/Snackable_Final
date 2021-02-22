@@ -14,10 +14,6 @@
         android:theme="@style/Theme.Snackable">
         <activity android:name=".DisplayChoicesActivity"></activity>
         <activity android:name=".SortChoicesActivity"></activity>
-        <activity
-            android:name=".MyListActivity"
-            android:label="@string/title_activity_my_list"
-            android:theme="@style/Theme.Snackable" />
         <activity android:name=".IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".YourListActivity" />
+        <activity android:name=".ListsActivity.YourListActivity" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".ProductItemDetail" />
         <activity android:name=".ProductItemDetailInfoBtn" />

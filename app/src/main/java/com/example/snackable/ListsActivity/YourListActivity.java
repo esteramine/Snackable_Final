@@ -1,33 +1,35 @@
-package com.example.snackable;
+package com.example.snackable.ListsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.snackable.CompareActivity;
+import com.example.snackable.ListsActivity.HistoryFragment;
+import com.example.snackable.ListsActivity.SavedFragment;
+import com.example.snackable.R;
+import com.example.snackable.ScanActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class YourListActivity extends AppCompatActivity implements HistoryFragment.OnSavedButtonClickListener{
+    private static final int MY_CAMERA_REQUEST_CODE = 100;
     BottomNavigationView bottomNavigationView;
     //Toolbar toolbar;
     FloatingActionButton fab;
@@ -66,10 +68,33 @@ public class YourListActivity extends AppCompatActivity implements HistoryFragme
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ScanActivity.class));
-                overridePendingTransition(0,0);
+                checkCameraPermission();
             }
         });
+    }
+
+    //camera permission check
+    private void checkCameraPermission(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+        }
+        else {
+            startActivity(new Intent(getApplicationContext(), ScanActivity.class));
+            overridePendingTransition(0,0);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), ScanActivity.class));
+                overridePendingTransition(0,0);
+            } else {
+                Toast.makeText(this, "You cannot scan because you deny the camera permission.", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void prepareViewPager(ViewPager viewPager, ArrayList<String> tabList) {
@@ -121,9 +146,6 @@ public class YourListActivity extends AppCompatActivity implements HistoryFragme
 
 
     private class MainAdapter extends FragmentPagerAdapter {
-        private final static String SHARED_PREFS = "SHARED_PREFS";
-        private final static String SAVED = "SAVED";
-        ArrayList<ProductItemModel> savedList = new ArrayList<>();
         ArrayList<String> titleList = new ArrayList<>();
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         public MainAdapter(@NonNull FragmentManager fm) {
@@ -135,10 +157,6 @@ public class YourListActivity extends AppCompatActivity implements HistoryFragme
             fragmentList.add(0, fragment);
         }
 
-        public void removeFragments(){
-            titleList.clear();
-            fragmentList.clear();
-        }
         @NonNull
         @Override
         public Fragment getItem(int position) {
