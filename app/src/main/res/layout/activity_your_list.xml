@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".CompareActivity">
+    tools:context=".CompareActivity.CompareActivity">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,7 +39,7 @@
             app:tabIndicatorHeight="5dp"
             app:tabSelectedTextColor="@color/white"
             android:background="@color/themeColor"/>
-        <com.example.snackable.NonSwipeableViewPager
+        <com.example.snackable.utils.NonSwipeableViewPager
             android:id="@+id/yourListViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.snackable.ItemClickListener;
+import com.example.snackable.utils.ItemClickListener;
 import com.example.snackable.R;
 
 public class YourListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

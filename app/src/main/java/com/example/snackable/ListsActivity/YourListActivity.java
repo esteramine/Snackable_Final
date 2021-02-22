@@ -17,9 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.snackable.CompareActivity;
-import com.example.snackable.ListsActivity.HistoryFragment;
-import com.example.snackable.ListsActivity.SavedFragment;
+import com.example.snackable.CompareActivity.CompareActivity;
 import com.example.snackable.R;
 import com.example.snackable.ScanActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

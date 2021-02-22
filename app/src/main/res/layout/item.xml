@@ -71,7 +71,7 @@
                         android:textSize="@dimen/font_size_m"
                         android:textStyle="bold"
                         android:textColor="@color/black"/>
-                    <com.example.snackable.ExpandableHeightGridView
+                    <com.example.snackable.utils.ExpandableHeightGridView
                         android:id="@+id/itemFAGridView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

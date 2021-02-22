@@ -23,7 +23,7 @@
         android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/delete"
+        android:src="@drawable/final_not_available_symbol"
         android:text="Scan"/>
     <TextView
         android:id="@+id/testText"

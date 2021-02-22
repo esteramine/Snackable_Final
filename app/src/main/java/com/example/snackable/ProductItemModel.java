@@ -1,9 +1,8 @@
 package com.example.snackable;
 
-import android.graphics.Bitmap;
+import com.example.snackable.FoodAdditiveDetailActivity.AdditivesDatabase;
 
 import java.io.Serializable;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

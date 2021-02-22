@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.snackable.ItemClickListener;
-import com.example.snackable.ProductItemDetail;
+import com.example.snackable.utils.ItemClickListener;
+import com.example.snackable.ProductDetailActivity.ProductItemDetail;
 import com.example.snackable.ProductItemModel;
 import com.example.snackable.R;
 import com.squareup.picasso.Picasso;

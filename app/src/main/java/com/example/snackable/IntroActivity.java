@@ -10,6 +10,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.snackable.CompareActivity.CompareActivity;
+
 public class IntroActivity extends AppCompatActivity {
     private static int SPLASH_SCREEN = 1500;
     ImageView logo;

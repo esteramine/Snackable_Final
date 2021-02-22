@@ -12,8 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Snackable">
-        <activity android:name=".DisplayChoicesActivity"></activity>
-        <activity android:name=".SortChoicesActivity"></activity>
+        <activity android:name=".SettingsActivities.DisplayChoicesActivity"></activity>
+        <activity android:name=".SettingsActivities.SortChoicesActivity"></activity>
         <activity android:name=".IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,10 +23,9 @@
         </activity>
         <activity android:name=".ListsActivity.YourListActivity" />
         <activity android:name=".ScanActivity" />
-        <activity android:name=".ProductItemDetail" />
-        <activity android:name=".ProductItemDetailInfoBtn" />
-        <activity android:name=".CompareActivity"></activity>
-        <activity android:name=".FoodAdditiveDetail" />
+        <activity android:name=".ProductDetailActivity.ProductItemDetail" />
+        <activity android:name=".CompareActivity.CompareActivity"></activity>
+        <activity android:name=".FoodAdditiveDetailActivity.FoodAdditiveDetailActivity" />
         <activity android:name=".MainActivity"></activity>
 
         <meta-data

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".FoodAdditiveDetail"
+    tools:context=".FoodAdditiveDetailActivity.FoodAdditiveDetailActivity"
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:numColumns="3"
                     android:gravity="center" />-->
-                <com.example.snackable.ExpandableHeightGridView
+                <com.example.snackable.utils.ExpandableHeightGridView
                     android:id="@+id/chartGridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

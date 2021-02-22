@@ -1,187 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
-    tools:context=".FoodAdditiveDetail">
-    <ImageButton
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="#00000000"
-        android:scaleType="fitCenter"
-        android:src="@drawable/down_arrow"
-        android:id="@+id/collapseButton"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"/>
-    <LinearLayout
+    tools:context=".FoodAdditiveDetailActivity.FoodAdditiveDetailActivity"
+    android:background="@color/white">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/itemDetailToolbarAdditives"
+        android:minHeight="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingVertical="10dp">
+        app:titleTextColor="@android:color/white"
+        android:background="@color/white"
+        app:menu="@menu/item_detail_menu">
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="25dp"
+        android:paddingHorizontal="30dp"
+        android:orientation="horizontal">
         <ImageView
-            android:id="@+id/productImg"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/kinder_maxi"
-            android:layout_weight="1"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:layout_weight="5">
-            <TextView
-                android:id="@+id/productName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Kinder Maxi"
-                android:textSize="30dp"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/productWeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="21g"
-                android:textSize="20dp"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="CALORIES"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:gravity="center"/>
-            <TextView
-                android:id="@+id/productCalories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="119 kcal"
-                android:textSize="15dp"
-                android:gravity="center"/>
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/pie_chart"
-                android:layout_margin="10dp"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="FAT"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:gravity="center"/>
-            <TextView
-                android:id="@+id/productFat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="7.4g"
-                android:textSize="15dp"
-                android:gravity="center"/>
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/pie_chart"
-                android:layout_margin="10dp"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="SUGAR"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:gravity="center"/>
-            <TextView
-                android:id="@+id/productSugar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="11.2 g"
-                android:textSize="15dp"
-                android:gravity="center"/>
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/pie_chart"
-                android:layout_margin="10dp"/>
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="25dp"
-        android:padding="15dp">
+            android:id="@+id/additiveIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/final_safe_symbol"
+            android:layout_gravity="center"/>
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/additiveTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ADDITIVES"
-            android:textSize="20dp"
-            android:textStyle="bold"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Trans Fat"
-                    android:padding="15dp"
-                    android:textSize="15dp"
-                    android:background="#77FF0000"/>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Soy Lecithin"
-                    android:padding="15dp"
-                    android:textSize="15dp"
-                    android:background="#7700FF00"/>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
+            android:text="Title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/black"/>
     </LinearLayout>
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="30dp"
+        android:fillViewport="false">
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutCheckbox"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/additive_uses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Uses"
+                android:textColor="#99000000"
+                android:paddingVertical="10dp"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/additive_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:paddingVertical="10dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+
+            <View
+                android:id="@+id/additive_separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/darker_gray"/>
+
+
+            <TextView
+                android:id="@+id/additive_foundin_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FOUND IN"
+                android:paddingVertical="10dp"
+                android:textStyle="bold"
+                android:textColor="#99000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/additive_foundin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Found in"
+                android:paddingVertical="10dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>
