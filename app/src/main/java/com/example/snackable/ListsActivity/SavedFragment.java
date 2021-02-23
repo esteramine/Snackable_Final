@@ -18,10 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.snackable.CompareActivity.CompareActivity;
 import com.example.snackable.ProductItemModel;
 import com.example.snackable.R;
+import com.example.snackable.utils.AlertDialogManager;
 import com.example.snackable.utils.SwipeHelper;
 import com.example.snackable.utils.LocalStorageManager;
+import com.example.snackable.utils.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,21 +66,18 @@ public class SavedFragment extends Fragment {
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setMessage("Are you sure you want to remove "+ savedList.get(pos).getProductName()+" from saved list?")
-                                        .setPositiveButton(Html.fromHtml("<font color='#FF0000'>DELETE</font>"), new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                Toast.makeText(context, savedList.get(pos).getProductName()+ " Removed!", Toast.LENGTH_LONG).show();
-                                                savedList.remove(pos);
-                                                adapter.notifyItemRemoved(pos);
-                                                localStorageManager.updateSaved(context, savedList);
-                                            }
-                                        })
-                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                // User cancelled the dialog
-                                            }
-                                        });
+                                AlertDialogManager alertDialogManager = new AlertDialogManager();
+                                AlertDialog.Builder builder = alertDialogManager.removeItemAlertDialogBuilder(context, savedList.get(pos).getProductName(), "Saved");
+
+                                builder.setPositiveButton(Html.fromHtml("<font color='#FF0000'>DELETE</font>"), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id){
+                                        new ToastManager().removedFromListToast(context, "Saved");
+                                        savedList.remove(pos);
+                                        adapter.notifyItemRemoved(pos);
+                                        localStorageManager.updateSaved(context, savedList);
+                                    }
+                                });
+
                                 builder.create();
                                 builder.show();
                             }
@@ -90,10 +90,7 @@ public class SavedFragment extends Fragment {
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                //Toast toast = Toast.makeText(getContext(), savedList.get(pos).getProductName()+ "\n Add to Compare!", Toast.LENGTH_LONG);
-                                Toast toast = Toast.makeText(getContext(), "Added to Compare", Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                toast.show();
+                                new ToastManager().savedToListToast(context, "Compare");
                                 localStorageManager.addToCompare(context, savedList.get(pos));
                                 adapter.notifyDataSetChanged();
                             }

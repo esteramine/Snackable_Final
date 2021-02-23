@@ -70,15 +70,12 @@ public class ProductItemDetail extends AppCompatActivity {
         setContentView(R.layout.activity_product_item_detail);
 
         Intent intent = getIntent();
-        model = (ProductItemModel) intent.getSerializableExtra("ModelScanned");
-        if (model==null){
-            model = (ProductItemModel) intent.getSerializableExtra("Model"); //get model from ProductItemAdapter
-            isScannedModel = false;
-        }
+        model = (ProductItemModel) intent.getSerializableExtra("Model"); //get model
+        boolean isCompareModel = intent.getBooleanExtra("Compare", false);
 
         hooks();
         // add to compare btn set up
-        if (isScannedModel){
+        if (!isCompareModel){ //if (isScannedModel || !isCompareModel)
             addToCompareBtn.setVisibility(View.VISIBLE);
         }
         else {

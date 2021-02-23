@@ -187,7 +187,7 @@ public class ScanActivity extends AppCompatActivity {
                         Intent intent = new Intent (ScanActivity.this, ProductItemDetail.class);
                         if (m.getProductName()!=""){
                             m.setProductSavedTime(System.currentTimeMillis()); //add time stamp
-                            intent.putExtra("ModelScanned", m);
+                            intent.putExtra("Model", m);
                             localStorageManager.saveDataToHistory(context, m);
                             //saveDataToHistory(m);
                         }

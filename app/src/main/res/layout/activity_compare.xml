@@ -12,17 +12,22 @@
         android:background="@color/bgColor"
         android:fitsSystemWindows="true"
         android:paddingBottom="66dp"> <!--bottom nav bar default height-->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:minHeight="?attr/actionBarSize"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:titleTextColor="@android:color/white"
-            android:background="?attr/colorPrimary"
-            app:menu="@menu/toolbar_menu"
-            android:theme="@style/Theme.Snackable.AppBarOverlay"
-            app:popupTheme="@style/Theme.Snackable">
-        </androidx.appcompat.widget.Toolbar>
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:minHeight="?attr/actionBarSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:titleTextColor="@android:color/white"
+                android:background="?attr/colorPrimary"
+                app:menu="@menu/toolbar_menu"
+                android:theme="@style/Theme.Snackable.AppBarOverlay"
+                app:popupTheme="@style/Theme.Snackable">
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/longclick_toolbar"
             android:visibility="gone"

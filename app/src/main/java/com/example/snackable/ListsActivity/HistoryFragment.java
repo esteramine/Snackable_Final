@@ -21,10 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.snackable.CompareActivity.CompareActivity;
 import com.example.snackable.ProductItemModel;
 import com.example.snackable.R;
+import com.example.snackable.utils.AlertDialogManager;
 import com.example.snackable.utils.SwipeHelper;
 import com.example.snackable.utils.LocalStorageManager;
+import com.example.snackable.utils.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,23 +71,16 @@ public class HistoryFragment extends Fragment {
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setMessage("Are you sure you want to remove "+ historyList.get(pos).getProductName()+" from history?")
-                                        .setPositiveButton(Html.fromHtml("<font color='#FF0000'>REMOVE</font>"), new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                Toast toast = Toast.makeText(getContext(), historyList.get(pos).getProductName()+ " Removed!", Toast.LENGTH_LONG);
-                                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                                toast.show();
-                                                historyList.remove(pos);
-                                                adapter.notifyItemRemoved(pos);
-                                                localStorageManager.updateHistory(context, historyList);
-                                            }
-                                        })
-                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                // User cancelled the dialog
-                                            }
-                                        });
+                                AlertDialogManager alertDialogManager = new AlertDialogManager();
+                                AlertDialog.Builder builder = alertDialogManager.removeItemAlertDialogBuilder(context, historyList.get(pos).getProductName(), "History");
+                                builder.setPositiveButton(Html.fromHtml("<font color='#FF0000'>REMOVE</font>"), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        new ToastManager().removedFromListToast(context, "History");
+                                        historyList.remove(pos);
+                                        adapter.notifyItemRemoved(pos);
+                                        localStorageManager.updateHistory(context, historyList);
+                                    }
+                                });
                                 builder.create();
                                 builder.show();
                             }
@@ -97,10 +93,7 @@ public class HistoryFragment extends Fragment {
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                //Toast toast = Toast.makeText(getContext(), historyList.get(pos).getProductName()+ "\n Add to Compare!", Toast.LENGTH_LONG);
-                                Toast toast = Toast.makeText(getContext(), "Added to Compare", Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                toast.show();
+                                new ToastManager().savedToListToast(context, "Compare");
                                 localStorageManager.addToCompare(context, historyList.get(pos));
                                 adapter.notifyDataSetChanged();
                             }
@@ -113,10 +106,7 @@ public class HistoryFragment extends Fragment {
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                //Toast toast = Toast.makeText(getActivity().getBaseContext(), historyList.get(pos).getProductName()+ " Saved!", Toast.LENGTH_LONG);
-                                Toast toast = Toast.makeText(context, "SAVED", Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                toast.show();
+                                new ToastManager().savedToListToast(context, "Saved");
                                 historyList.get(pos).setBookmarked(true);
                                 localStorageManager.saveDataToSaved(context,historyList.get(pos));
 

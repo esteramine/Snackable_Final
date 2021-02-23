@@ -30,15 +30,20 @@
             app:titleTextColor="@android:color/white"
             android:background="?attr/colorPrimary">
         </androidx.appcompat.widget.Toolbar>-->
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/yourListTabLayout"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:tabTextColor="@color/white"
-            app:tabIndicatorColor="@color/white"
-            app:tabIndicatorHeight="5dp"
-            app:tabSelectedTextColor="@color/white"
-            android:background="@color/themeColor"/>
+            android:layout_height="wrap_content">
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/yourListTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:tabTextColor="@color/white"
+                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorHeight="5dp"
+                app:tabSelectedTextColor="@color/white"
+                android:background="@color/themeColor"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
         <com.example.snackable.utils.NonSwipeableViewPager
             android:id="@+id/yourListViewPager"
             android:layout_width="match_parent"

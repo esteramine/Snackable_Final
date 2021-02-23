@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Gravity;
@@ -34,8 +36,10 @@ import com.example.snackable.R;
 import com.example.snackable.ScanActivity;
 import com.example.snackable.SettingsActivities.DisplayChoicesActivity;
 import com.example.snackable.SettingsActivities.SortChoicesActivity;
+import com.example.snackable.utils.AlertDialogManager;
 import com.example.snackable.utils.LocalStorageManager;
 import com.example.snackable.utils.SwipeHelper;
+import com.example.snackable.utils.ToastManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -234,24 +238,19 @@ public class CompareActivity extends AppCompatActivity{
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(CompareActivity.this);
-                                builder.setMessage("Are you sure you want to remove "+ itemList.get(pos).getProductName()+" from compare list?")
-                                        .setPositiveButton(Html.fromHtml("<font color='#FF0000'>REMOVE</font>"), new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                Toast toast = Toast.makeText(CompareActivity.this, itemList.get(pos).getProductName()+ " Removed!", Toast.LENGTH_LONG);
-                                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                                toast.show();
-                                                itemList.remove(pos);
-                                                //adapter.notifyItemRemoved(pos);
-                                                updateCompareList();
-                                                showComponents();
-                                            }
-                                        })
-                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                // User cancelled the dialog
-                                            }
-                                        });
+                                AlertDialogManager alertDialogManager = new AlertDialogManager();
+                                AlertDialog.Builder builder = alertDialogManager.removeItemAlertDialogBuilder(CompareActivity.this, itemList.get(pos).getProductName(), "Compare");
+
+                                builder.setPositiveButton(Html.fromHtml("<font color='#FF0000'>REMOVE</font>"), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        new ToastManager().removedFromListToast(CompareActivity.this, "Compare");
+                                        itemList.remove(pos);
+                                        //adapter.notifyItemRemoved(pos);
+                                        updateCompareList();
+                                        showComponents();
+                                    }
+                                });
+
                                 builder.create();
                                 builder.show();
                             }
@@ -264,9 +263,7 @@ public class CompareActivity extends AppCompatActivity{
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                Toast toast = Toast.makeText(CompareActivity.this, "SAVED", Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                toast.show();
+                                new ToastManager().savedToListToast(CompareActivity.this, "Saved");
                                 itemList.get(pos).setBookmarked(true);
                                 adapter.notifyDataSetChanged();
                                 localStorageManager.saveDataToSaved(context, itemList.get(pos));

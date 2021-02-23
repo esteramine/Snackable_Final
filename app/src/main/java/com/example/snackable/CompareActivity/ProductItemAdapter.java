@@ -244,6 +244,7 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder> 
     void showPopup(ProductItemModel model){
         Intent intent = new Intent(c, ProductItemDetail.class);
         intent.putExtra("Model", model);
+        intent.putExtra("Compare", true);
         c.startActivity(intent);
     }
 }
