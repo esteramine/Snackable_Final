@@ -12,13 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.snackable.CompareActivity.CompareActivity;
 import com.example.snackable.ProductItemModel;
 import com.example.snackable.R;
 import com.example.snackable.utils.AlertDialogManager;
@@ -32,7 +29,7 @@ import java.util.List;
 
 public class SavedFragment extends Fragment {
     ArrayList<ProductItemModel> savedList = new ArrayList<>();
-    LocalStorageManager localStorageManager = new LocalStorageManager();
+    LocalStorageManager localStorageManager;
     RecyclerView recyclerView;
     YourListAdapter adapter;
     Context context;
@@ -45,8 +42,9 @@ public class SavedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         context = this.getContext();
+        localStorageManager= new LocalStorageManager(context);
         //load Saved
-        savedList = localStorageManager.getSaved(context);
+        savedList = localStorageManager.getSaved();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_saved, container, false);
         recyclerView = view.findViewById(R.id.savedRecyclerView);
@@ -69,12 +67,16 @@ public class SavedFragment extends Fragment {
                                 AlertDialogManager alertDialogManager = new AlertDialogManager();
                                 AlertDialog.Builder builder = alertDialogManager.removeItemAlertDialogBuilder(context, savedList.get(pos).getProductName(), "Saved");
 
-                                builder.setPositiveButton(Html.fromHtml("<font color='#FF0000'>DELETE</font>"), new DialogInterface.OnClickListener() {
+                                builder.setPositiveButton(Html.fromHtml("<font color='#FF0000'>REMOVE</font>"), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id){
                                         new ToastManager().removedFromListToast(context, "Saved");
+                                        //update compare
+                                        localStorageManager.updateBookmarkedItemInCompare(savedList.get(pos), false);
+                                        //update savedList
                                         savedList.remove(pos);
                                         adapter.notifyItemRemoved(pos);
-                                        localStorageManager.updateSaved(context, savedList);
+                                        //update local storage saved
+                                        localStorageManager.updateSaved(savedList);
                                     }
                                 });
 
@@ -91,7 +93,7 @@ public class SavedFragment extends Fragment {
                             @Override
                             public void onClick(int pos) {
                                 new ToastManager().savedToListToast(context, "Compare");
-                                localStorageManager.addToCompare(context, savedList.get(pos));
+                                localStorageManager.addToCompare(savedList.get(pos));
                                 adapter.notifyDataSetChanged();
                             }
                         }

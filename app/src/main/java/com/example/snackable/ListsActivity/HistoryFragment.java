@@ -13,15 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import android.text.Html;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.snackable.CompareActivity.CompareActivity;
 import com.example.snackable.ProductItemModel;
 import com.example.snackable.R;
 import com.example.snackable.utils.AlertDialogManager;
@@ -36,7 +34,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class HistoryFragment extends Fragment {
     ArrayList<ProductItemModel> historyList = new ArrayList<>();
-    LocalStorageManager localStorageManager = new LocalStorageManager();
+    LocalStorageManager localStorageManager;
     RecyclerView recyclerView;
     YourListAdapter adapter;
     Context context;
@@ -50,8 +48,9 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Initialize view
         context = this.getContext();
+        localStorageManager = new LocalStorageManager(context);
         // load History
-        historyList = localStorageManager.getHistory(context);
+        historyList = localStorageManager.getHistory();
 
         View view = inflater.inflate(R.layout.fragment_history, container, false);
         recyclerView = view.findViewById(R.id.historyRecyclerView);
@@ -78,7 +77,7 @@ public class HistoryFragment extends Fragment {
                                         new ToastManager().removedFromListToast(context, "History");
                                         historyList.remove(pos);
                                         adapter.notifyItemRemoved(pos);
-                                        localStorageManager.updateHistory(context, historyList);
+                                        localStorageManager.updateHistory(historyList);
                                     }
                                 });
                                 builder.create();
@@ -94,8 +93,9 @@ public class HistoryFragment extends Fragment {
                             @Override
                             public void onClick(int pos) {
                                 new ToastManager().savedToListToast(context, "Compare");
-                                localStorageManager.addToCompare(context, historyList.get(pos));
-                                adapter.notifyDataSetChanged();
+                                localStorageManager.addToCompare(historyList.get(pos));
+                                //adapter.notifyDataSetChanged();
+                                adapter.notifyItemChanged(pos);
                             }
                         }
                 ));
@@ -108,10 +108,10 @@ public class HistoryFragment extends Fragment {
                             public void onClick(int pos) {
                                 new ToastManager().savedToListToast(context, "Saved");
                                 historyList.get(pos).setBookmarked(true);
-                                localStorageManager.saveDataToSaved(context,historyList.get(pos));
-
-                                OnSavedButtonClickListener listener = (OnSavedButtonClickListener) getActivity();
-                                listener.onSavedButtonClicked();
+                                localStorageManager.saveDataToSaved(historyList.get(pos));
+                                adapter.notifyItemChanged(pos);
+                                /*OnSavedButtonClickListener listener = (OnSavedButtonClickListener) getActivity();
+                                listener.onSavedButtonClicked();*/
                             }
                         }
                 ));

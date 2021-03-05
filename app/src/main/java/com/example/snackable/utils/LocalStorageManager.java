@@ -23,15 +23,20 @@ public class LocalStorageManager {
 
     Gson gson = new Gson();
     Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
+    SharedPreferences sharedPreferences;
 
-    public LocalStorageManager() {
+    /*public LocalStorageManager() {
         // constructor
+    }*/
+
+    public LocalStorageManager(Context context) {
+        // constructor
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
     }
 
 
     // Compare List Operations
-    public ArrayList<ProductItemModel> getCompare(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+    public ArrayList<ProductItemModel> getCompare(){
         ArrayList<ProductItemModel> itemList = new ArrayList<>();
         String json = sharedPreferences.getString(ITEMLIST, "");
         if (json!=""){
@@ -40,16 +45,15 @@ public class LocalStorageManager {
         return itemList;
     }
 
-    public void updateCompare(Context context, ArrayList<ProductItemModel> compareList){
-        SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).edit();
+    public void updateCompare(ArrayList<ProductItemModel> compareList){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         String json = gson.toJson(compareList);
         editor.putString(ITEMLIST, json);
         editor.commit();
     }
 
-    public void addToCompare(Context context, ProductItemModel model){
+    public void addToCompare(ProductItemModel model){
         ArrayList<ProductItemModel> compareList = new ArrayList<>();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
         //load data from Compare
         String json = sharedPreferences.getString(ITEMLIST, "");
@@ -71,20 +75,38 @@ public class LocalStorageManager {
         editor.commit();
     }
 
+    public void updateBookmarkedItemInCompare(ProductItemModel m, boolean bookmarked){
+        ArrayList<ProductItemModel> itemList = new ArrayList<>();
+        String json = sharedPreferences.getString(ITEMLIST, "");
+        if (json!=""){
+            itemList = gson.fromJson(json, type);
+            for (int i = 0; i < itemList.size(); i++){
+                if (m.getProductBarcode().equals(itemList.get(i).getProductBarcode())){
+                    itemList.get(i).setBookmarked(bookmarked);
+                    //save back to saved list
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    String jsonSaved = gson.toJson(itemList);
+                    editor.putString(ITEMLIST, jsonSaved);
+                    editor.commit();
+                    break;
+                }
+            }
+        }
+        else
+            return;
+    }
+
     // Sort Setting Operations
-    public String getSortChoice(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+    public String getSortChoice(){
         String sortChoice = sharedPreferences.getString(SORT_OPT, "Sugars");
         return sortChoice;
     }
-    public boolean getSortOrder(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+    public boolean getSortOrder(){
         boolean sortOrder = sharedPreferences.getBoolean(SORT_ORDER, true);
         return sortOrder;
     }
     // Display Setting Operations
-    public boolean[] getDisplayOptions(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+    public boolean[] getDisplayOptions(){
         boolean[] displayOpts = new boolean[9];
         Type typeDisplay = new TypeToken<boolean[]>(){}.getType();
         String json = sharedPreferences.getString(DISPLAY_OPTS, "");
@@ -101,8 +123,7 @@ public class LocalStorageManager {
 
 
     // History List Operations
-    public ArrayList<ProductItemModel> getHistory(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+    public ArrayList<ProductItemModel> getHistory(){
         ArrayList<ProductItemModel> historyList = new ArrayList<>();
 
         String json = sharedPreferences.getString(HISTORY, "");
@@ -112,17 +133,16 @@ public class LocalStorageManager {
         return historyList;
     }
 
-    public void updateHistory(Context context, ArrayList<ProductItemModel> historyList){
-        SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).edit();
+    public void updateHistory(ArrayList<ProductItemModel> historyList){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(historyList);
         editor.putString(HISTORY, json);
         editor.commit();
     }
 
-    public void saveDataToHistory(Context context, ProductItemModel model){ //do not have to care whether the product scanned before or not
+    public void saveDataToHistory(ProductItemModel model){ //do not have to care whether the product scanned before or not
         ArrayList<ProductItemModel> historyList = new ArrayList<>();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
         // load History from shared prefs
         String json = sharedPreferences.getString(HISTORY, "");
@@ -142,8 +162,7 @@ public class LocalStorageManager {
 
 
     // Saved List Operations
-    public ArrayList<ProductItemModel> getSaved(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+    public ArrayList<ProductItemModel> getSaved(){
         ArrayList<ProductItemModel> savedList = new ArrayList<>();
         String json = sharedPreferences.getString(SAVED, "");
         if (json!=""){
@@ -152,8 +171,8 @@ public class LocalStorageManager {
         return savedList;
     }
 
-    public void updateSaved(Context context, ArrayList<ProductItemModel> savedList){
-        SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).edit();
+    public void updateSaved(ArrayList<ProductItemModel> savedList){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         Gson gson = new Gson();
         String jsonSaved = gson.toJson(savedList);
@@ -161,9 +180,8 @@ public class LocalStorageManager {
         editor.commit();
     }
 
-    public void saveDataToSaved(Context context, ProductItemModel model){
+    public void saveDataToSaved(ProductItemModel model){
         ArrayList<ProductItemModel> savedList = new ArrayList<>();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
         // load Saved from shared prefs
         String json = sharedPreferences.getString(SAVED, "");
@@ -184,4 +202,27 @@ public class LocalStorageManager {
         editor.putString(SAVED, jsonSaved);
         editor.commit();
     }
+
+    public void removeFromSaved(ProductItemModel model){
+        String json = sharedPreferences.getString(SAVED, "");
+        ArrayList<ProductItemModel> savedList = new ArrayList<>();
+        if (json!=""){
+            savedList = gson.fromJson(json, type);
+            for (int i = 0; i < savedList.size(); i++){
+                if (model.getProductBarcode().equals(savedList.get(i).getProductBarcode())){
+                    savedList.remove(i);
+
+                    //save back to saved list
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    String jsonSaved = gson.toJson(savedList);
+                    editor.putString(SAVED, jsonSaved);
+                    editor.commit();
+                    break;
+                }
+            }
+        }
+        else
+            return;
+    }
+
 }

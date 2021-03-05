@@ -23,4 +23,11 @@ public class ToastManager {
         toast.show();
     }
 
+    public void noItemExistToast(Context context){
+        String text = "There is no product in Compare!";
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
 }

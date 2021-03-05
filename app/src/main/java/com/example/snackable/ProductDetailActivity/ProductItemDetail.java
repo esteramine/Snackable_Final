@@ -24,6 +24,7 @@ import com.example.snackable.CompareActivity.CompareActivity;
 import com.example.snackable.utils.ExpandableHeightGridView;
 import com.example.snackable.ProductItemModel;
 import com.example.snackable.R;
+import com.example.snackable.utils.LocalStorageManager;
 import com.example.snackable.utils.UnscrollableLinearLayoutManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -36,9 +37,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductItemDetail extends AppCompatActivity {
-    private final static String SHARED_PREFS = "SHARED_PREFS";
-    private final static String SAVED = "SAVED";
-    private final static String ITEMLIST = "ITEMLIST";
     private static final String NAME = "Name";
     private static final String AMOUNT = "Amount";
     private static final String DRI = "DRI";
@@ -59,6 +57,7 @@ public class ProductItemDetail extends AppCompatActivity {
     NestedScrollView nestedScrollView;
     TextView noneText;
     Context c;
+    LocalStorageManager localStorageManager;
 
     Toolbar toolbar;
 
@@ -68,6 +67,8 @@ public class ProductItemDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_item_detail);
+        c = getApplicationContext();
+        localStorageManager = new LocalStorageManager(c);
 
         Intent intent = getIntent();
         model = (ProductItemModel) intent.getSerializableExtra("Model"); //get model
@@ -128,27 +129,30 @@ public class ProductItemDetail extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()){
             case R.id.miBookmark:
                 if(item.getIcon().getConstantState().equals(getResources().getDrawable(R.drawable.ic_bookmark_dark).getConstantState())){
                     item.setIcon(R.drawable.ic_bookmark_snackable);
                     model.setBookmarked(true);
-                    saveToSavedList(model);
+                    localStorageManager.saveDataToSaved(model);
                     Toast.makeText(getBaseContext(), "SAVED", Toast.LENGTH_LONG).show();
-                    if(!isScannedModel){
+                    /*if(!isScannedModel){
                         updateCompareListBookmarked(model, true);
-                    }
+                    }*/
+                    localStorageManager.updateBookmarkedItemInCompare(model, true);
                 }
                 else {
                     item.setIcon(R.drawable.ic_bookmark_dark);
                     model.setBookmarked(false);
-                    bookmarkRemoved(model);
+                    localStorageManager.removeFromSaved(model);
                     Toast.makeText(getBaseContext(), "REMOVE from Saved", Toast.LENGTH_LONG).show();
-                    if(!isScannedModel){
+                    /*if(!isScannedModel){
                         updateCompareListBookmarked(model, false);
-                    }
+                    }*/
+                    localStorageManager.updateBookmarkedItemInCompare(model, false);
                 }
-                return false;
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -236,84 +240,6 @@ public class ProductItemDetail extends AppCompatActivity {
         }
 
         return nutritionContent;
-    }
-
-    void bookmarkRemoved(ProductItemModel m){
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(SAVED, "");
-        ArrayList<ProductItemModel> savedList = new ArrayList<>();
-        if (json!=""){
-            savedList = gson.fromJson(json, type);
-            for (int i = 0; i < savedList.size(); i++){
-                if (m.getProductBarcode().equals(savedList.get(i).getProductBarcode())){
-                    savedList.remove(i);
-
-                    //save back to saved list
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    Gson gsonSaved = new Gson();
-                    String jsonSaved = gsonSaved.toJson(savedList);
-                    editor.putString(SAVED, jsonSaved);
-                    editor.commit();
-                    break;
-                }
-            }
-        }
-        else
-            return;
-    }
-
-    void updateCompareListBookmarked(ProductItemModel m, boolean bookmarked){
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        ArrayList<ProductItemModel> itemList = new ArrayList<>();
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(ITEMLIST, "");
-        if (json!=""){
-            itemList = gson.fromJson(json, type);
-            for (int i = 0; i < itemList.size(); i++){
-                if (m.getProductBarcode().equals(itemList.get(i).getProductBarcode())){
-                    itemList.get(i).setBookmarked(bookmarked);
-
-                    //save back to saved list
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    Gson gsonSaved = new Gson();
-                    String jsonSaved = gsonSaved.toJson(itemList);
-                    editor.putString(ITEMLIST, jsonSaved);
-                    editor.commit();
-                    break;
-                }
-            }
-        }
-        else
-            return;
-    }
-
-    void saveToSavedList(ProductItemModel model){
-        //load to saved list
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<ProductItemModel>>(){}.getType();
-        String json = sharedPreferences.getString(SAVED, "");
-        ArrayList<ProductItemModel> savedList = new ArrayList<>();
-        if (json!=""){
-            savedList = gson.fromJson(json, type);
-        }
-        //check whether there is same product in the compare list
-        for (int i = 0; i < savedList.size(); i++){
-            if (savedList.get(i).getProductBarcode().equals(model.getProductBarcode())){
-                return;
-            }
-        }
-        savedList.add(0, model);
-
-        //add to saved list
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gsonSaved = new Gson();
-        String jsonSaved = gsonSaved.toJson(savedList);
-        editor.putString(SAVED, jsonSaved);
-        editor.commit();
     }
 
 }

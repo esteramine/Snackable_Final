@@ -93,10 +93,15 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder> 
         //byte[] bytes = models.get(position).getProductImg();
         /*Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         holder.itemImg.setImageBitmap(bitmap);*/
-        if (!models.get(position).getProductImg().isEmpty()){
+
+        if (models.get(position).getProductImg().isEmpty()){
+            holder.itemImg.setImageResource(R.drawable.not_found);
+        }
+        else {
             Picasso.get().load(models.get(position).getProductImg()).placeholder(R.drawable.loading)
                     .error(R.drawable.not_found).into(holder.itemImg);
         }
+
 
 
         holder.itemName.setText(models.get(position).getProductName());
@@ -162,7 +167,7 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder> 
                 if (models.get(position).getNutritionContents().containsKey(key)){
                     String consumed = models.get(position).getNutritionContents().get(key).replaceAll("[^\\d.]", "");
                     if ( !consumed.isEmpty() && driAmount!= 1f && Float.parseFloat(consumed)/driAmount > 1){
-                        if (!holder.itemDes.getText().equals("")){ //not first line of text
+                        if (!holder.itemDes.getText().toString().equals("")){ //not first line of text
                             holder.itemDes.append("\n");
                         }
                         String nutrientAmount = key + " (" + models.get(position).getNutritionContents().get(key) + ") ";
@@ -209,7 +214,7 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder> 
             }
         }*/
         String nutrientsOutput = "";
-        if (!holder.itemDes.getText().equals("")){ //not first line of text
+        if (!holder.itemDes.getText().toString().equals("")){ //not first line of text
             nutrientsOutput = "\n";
         }
         for (int i = 0; i < nutrients.size(); i++){

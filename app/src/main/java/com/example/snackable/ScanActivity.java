@@ -38,7 +38,7 @@ public class ScanActivity extends AppCompatActivity {
     private CodeScanner mCodeScanner;
     private ImageView cancelBtn;
 
-    LocalStorageManager localStorageManager = new LocalStorageManager();
+    LocalStorageManager localStorageManager;
     String barcodeNum;
     Thread th;
 
@@ -49,6 +49,7 @@ public class ScanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
         context = getApplicationContext();
+        localStorageManager = new LocalStorageManager(context);
         //checkCameraPermission();
 
         cancelBtn = findViewById(R.id.cancelBtn);
@@ -188,7 +189,7 @@ public class ScanActivity extends AppCompatActivity {
                         if (m.getProductName()!=""){
                             m.setProductSavedTime(System.currentTimeMillis()); //add time stamp
                             intent.putExtra("Model", m);
-                            localStorageManager.saveDataToHistory(context, m);
+                            localStorageManager.saveDataToHistory(m);
                             //saveDataToHistory(m);
                         }
                         ScanActivity.this.startActivity(intent);

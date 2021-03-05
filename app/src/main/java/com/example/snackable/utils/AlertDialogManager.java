@@ -30,4 +30,18 @@ public class AlertDialogManager {
 
         return builder;
     }
+
+    public AlertDialog.Builder clearAllAlertDialogBuilder(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        String message = "Are you sure to clear all the items in Compare?";
+
+        builder.setMessage(message);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
+        return builder;
+    }
 }
